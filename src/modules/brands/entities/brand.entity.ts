@@ -1,13 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity } from 'typeorm'
+import { Base } from '@/modules/base/base.entity'
 
 @Entity('brands')
-export class Brand {
-	@PrimaryGeneratedColumn('uuid')
-	id: string
+export class Brand extends Base {
+    @Column({ type: 'varchar', length: 50 })
+    name: string
 
-	@Column()
-	name: string
-
-	@Column()
-	logo: string
+    @Column({ type: 'varchar', length: 100 })
+    logo: string
 }

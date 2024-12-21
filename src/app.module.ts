@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import configuration from '@/config'
 import { AppController } from '@/app.controller'
 import { AppService } from '@/app.service'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { ProductsModule } from '@/modules/products/products.module'
-import configuration from '@/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { UsersModule } from './modules/users/users.module'
-import { CategoriesModule } from './modules/categories/categories.module'
-import { BrandsModule } from './modules/brands/brands.module'
+import { ProductsModule } from '@/modules/products/products.module'
+import { UsersModule } from '@/modules/users/users.module'
+import { CategoriesModule } from '@/modules/categories/categories.module'
+import { BrandsModule } from '@/modules/brands/brands.module'
+import { AuthModule } from '@/modules/auth/auth.module'
 
 @Module({
     imports: [
@@ -26,6 +27,7 @@ import { BrandsModule } from './modules/brands/brands.module'
         CategoriesModule,
         BrandsModule,
         UsersModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],

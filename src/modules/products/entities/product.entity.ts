@@ -1,45 +1,39 @@
 import {
     Entity,
-    PrimaryGeneratedColumn,
     Column,
-    CreateDateColumn,
-    UpdateDateColumn,
     JoinColumn,
     OneToOne,
-    OneToMany,
     ManyToMany,
     JoinTable,
 } from 'typeorm'
-import { Brand } from '../../brands/entities/brand.entity'
-import { Category } from '../../categories/entities/category.entity'
+import { Brand } from '@/modules/brands/entities/brand.entity'
+import { Category } from '@/modules/categories/entities/category.entity'
+import { Base } from '@/modules/base/base.entity'
 
 @Entity('products') // Declares the class as an entity
-export class Product {
-    @PrimaryGeneratedColumn('uuid') // Auto-incremented primary key
-    id: string
-
-    @Column({ type: 'varchar', length: 255 })
+export class Product extends Base {
+    @Column({ type: 'varchar', length: 50 })
     name: string
 
-    @Column({ type: 'varchar', length: 255 })
+    @Column({ type: 'varchar', length: 100 })
     slug: string
 
-    @Column('int')
+    @Column({ type: 'int' })
     price: number
 
-    @Column()
+    @Column({ type: 'int' })
     discount: number
 
-    @Column()
+    @Column({ type: 'int' })
     total_in_stock: number
 
-    @Column({ type: 'varchar', length: 500, nullable: true })
+    @Column({ type: 'varchar', length: 500 })
     description: string
 
-    @Column()
+    @Column({ type: 'varchar', length: 100 })
     thumbnail: string
 
-    @Column()
+    @Column({ type: 'boolean', default: false })
     is_published: boolean
 
     @Column({ type: 'int', default: 0 })
@@ -56,10 +50,4 @@ export class Product {
         inverseJoinColumn: { name: 'category_id', referencedColumnName: 'id' },
     })
     category: Category
-
-    @CreateDateColumn()
-    created_at: Date
-
-    @UpdateDateColumn()
-    updated_at: Date
 }

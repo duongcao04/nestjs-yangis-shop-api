@@ -1,9 +1,7 @@
 import {
-    Get,
     HttpException,
     HttpStatus,
     Injectable,
-    Post,
 } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -19,32 +17,38 @@ export class UsersService {
         private readonly userRepository: Repository<User>,
     ) {}
 
-    @Post()
     async create(createUserDto: CreateUserDto): Promise<User> {
         const user = new User()
 
-        const isExistUser = await this.userRepository.findOneBy({
-            email: createUserDto.email,
-        })
-
-        if (isExistUser)
+        if (this.isExistUser)
             throw new HttpException('Conflict', HttpStatus.CONFLICT)
 
-        const hashPassword = await hashPasswordHelper(createUserDto.password)
+        const hashedPassword = await hashPasswordHelper(user.password)
         user.full_name = createUserDto.full_name
+        user.user_name = createUserDto.getUserName()
         user.email = createUserDto.email
-        user.password = hashPassword
+        user.password = hashedPassword()
         user.phone_number = createUserDto.phone_number
-        return this.userRepository.save(user)
+
+        return user
+
+        // return this.userRepository.save(user)
     }
 
-    @Get()
+    async isExistUser(email: string): Promise<boolean> {
+        return Boolean(await this.userRepository.findOneBy({ email }))
+    }
+
     findAll(): Promise<User[]> {
         return this.userRepository.find()
     }
 
     findOne(id: string): Promise<User> {
         return this.userRepository.findOneBy({ id })
+    }
+
+    findOneByEmail(email: string): Promise<User> {
+        return this.userRepository.findOneBy({ email })
     }
 
     update(id: number, updateUserDto: UpdateUserDto) {

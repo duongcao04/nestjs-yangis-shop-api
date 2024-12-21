@@ -8,6 +8,8 @@ async function bootstrap() {
         new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
     )
     app.setGlobalPrefix('api/v1', { exclude: [''] })
-    await app.listen(process.env.PORT ?? 8080)
+    await app.listen(process.env.APP_PORT ?? 8000,()=>{
+        console.log(`Application running on port:::${process.env.APP_PORT}`)
+    })
 }
 bootstrap()
