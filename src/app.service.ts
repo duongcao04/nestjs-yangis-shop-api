@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class AppService {
-    constructor(private readonly configService: ConfigService) {}
+    constructor() {}
     getHello() {
-        return JSON.stringify({
+        const author = JSON.stringify({
             message:
                 'Welcome to Yangis Shop RESTful API. You can read the documentation at README.md',
             website: 'https://shop.yangis.dev',
@@ -13,5 +13,6 @@ export class AppService {
             email: 'caohaiduong04@gmail.com',
             github: 'https://github.com/haiduongg',
         })
+        return author
     }
 }

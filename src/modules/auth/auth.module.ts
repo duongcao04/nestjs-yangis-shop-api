@@ -1,14 +1,29 @@
 import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
+
 import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { User } from '../users/entities/user.entity'
-import { UsersModule } from '../users/users.module'
+
+import { User } from '@/modules/users/entities/user.entity'
+import { UsersModule } from '@/modules/users/users.module'
+import { MailModule } from '@/modules/mail/mail.module'
+import { JwtService } from '@nestjs/jwt'
+import { TokenService } from './token.service'
+import { LocalStrategy } from './strategies/local.strategy'
+import { JwtStrategy } from './strategies/jwt.strategy'
+import { BcryptService } from './bcrypt.service'
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User]), UsersModule],
+    imports: [TypeOrmModule.forFeature([User]), UsersModule, MailModule],
     controllers: [AuthController],
-    providers: [AuthService],
+    providers: [
+        AuthService,
+        TokenService,
+        LocalStrategy,
+        JwtStrategy,
+        JwtService,
+        BcryptService,
+    ],
     exports: [AuthService],
 })
 export class AuthModule {}

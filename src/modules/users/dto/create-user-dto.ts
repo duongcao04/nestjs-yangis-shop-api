@@ -1,4 +1,3 @@
-import { Expose } from 'class-transformer'
 import {
     IsEmail,
     IsNotEmpty,
@@ -7,20 +6,19 @@ import {
     Length,
     MaxLength,
 } from 'class-validator'
-import { generateFromEmail } from 'unique-username-generator'
 
-export const USERNAME_RANDOM_DIGITS = 5
-
-export class RegisterDto {
+export class CreateUserDto {
     @IsNotEmpty()
-    @MaxLength(50)
-    full_name: string
+    @MaxLength(30)
+    first_name: string
 
-    @Expose({ name: 'user_name' })
+    @IsNotEmpty()
+    @MaxLength(30)
+    last_name: string
+
     @IsOptional()
-    getUserName(): string {
-        return generateFromEmail(this.email, USERNAME_RANDOM_DIGITS)
-    }
+    @MaxLength(50)
+    user_name: string
 
     @IsNotEmpty()
     @Length(8, 100)

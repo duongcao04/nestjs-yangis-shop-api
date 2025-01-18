@@ -10,15 +10,12 @@ export abstract class Base {
     @PrimaryGeneratedColumn('uuid') // Auto-incremented primary key
     id: string
 
-    @Column({ type: 'boolean', default: false })
-    is_deleted: boolean
-
-    @CreateDateColumn()
+    @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ nullable: true })
     deleted_at: Date
 }

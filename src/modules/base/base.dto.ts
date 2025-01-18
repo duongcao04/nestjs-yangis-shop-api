@@ -7,10 +7,6 @@ export abstract class BaseDto {
     @IsString()
     id: string
 
-    @IsNotEmpty()
-    @IsBoolean()
-    is_deleted: boolean
-
     @Expose()
     @IsNotEmpty()
     @IsDate()
