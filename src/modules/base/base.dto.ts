@@ -3,10 +3,6 @@ import { IsBoolean, IsDate, IsNotEmpty, IsString } from 'class-validator'
 
 @Exclude()
 export abstract class BaseDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string
-
     @Expose()
     @IsNotEmpty()
     @IsDate()

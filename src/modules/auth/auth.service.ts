@@ -1,9 +1,8 @@
 const crypto = require('crypto')
-import { Injectable, UnauthorizedException, UseGuards } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 
 import { UsersService } from '@/modules/users/users.service'
 import { comparePasswordHelper } from '@/helpers/utils'
-import { JwtService } from '@nestjs/jwt'
 
 import { SignInDto } from './dtos/sign-in.dto'
 import { ConfigService } from '@nestjs/config'
@@ -11,9 +10,6 @@ import { User } from '../users/entities/user.entity'
 import { TokenPayload } from './interfaces/token-payload.interface'
 import { verifyEmailTemplate } from './resources/verify-email-template'
 import { MailService } from '../mail/mail.service'
-import { Response } from 'express'
-import { JwtAuthGuard } from './guards/jwt-auth.guard'
-import { CurrentUser } from './decorators/current-user.decorator'
 import { LoginResponse } from './interfaces/login-response.interface'
 import { TokenService } from './token.service'
 

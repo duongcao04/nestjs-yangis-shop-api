@@ -1,20 +1,9 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
-import { BaseDto } from '../../base/base.dto'
+import { OmitType, PickType } from '@nestjs/mapped-types'
+import { CategoryDto } from './category.dto'
 
-export class CreateCategoryDto {
-    @IsNotEmpty()
-    @IsString()
-    name: string
-
-    @IsNotEmpty()
-    @IsString()
-    thumbnail: string
-
-    @IsNotEmpty()
-    @IsString()
-    icon: string
-
-    @IsOptional()
-    @IsString()
-    description: string
-}
+export class CreateCategoryDto extends OmitType(CategoryDto, [
+    'id',
+    'created_at',
+    'updated_at',
+    'deleted_at',
+] as const) {}

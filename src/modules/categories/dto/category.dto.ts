@@ -1,11 +1,28 @@
-import { Type } from 'class-transformer'
-import { BaseDto } from '../../base/base.dto'
-import { CreateCategoryDto } from './create-category.dto'
+import { BaseDto } from '@/modules/base/base.dto'
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
-export class CategoryDto {
-    @Type(() => BaseDto)
-    baseDto: BaseDto
+export class CategoryDto extends BaseDto {
+    @IsNotEmpty()
+    @IsString()
+    id: string
 
-    @Type(() => CreateCategoryDto)
-    createCategoryDto: CreateCategoryDto
+    @IsNotEmpty()
+    @IsString()
+    name: string
+
+    @IsNotEmpty()
+    @IsString()
+    slug: string
+
+    @IsNotEmpty()
+    @IsString()
+    thumbnail: string
+
+    @IsNotEmpty()
+    @IsString()
+    icon: string
+
+    @IsOptional()
+    @IsString()
+    description: string
 }
