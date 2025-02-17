@@ -22,18 +22,23 @@ export class BrandsService {
     }
 
     findAll() {
-        return this.brandRepository.find()
+        return this.brandRepository.find({
+            relations: ['products'],
+        })
     }
 
-    findOne(id: string) {
-        return this.brandRepository.findOne({ where: { id } })
+    findById(id: string) {
+        return this.brandRepository.findOne({
+            where: { id },
+            relations: ['products'],
+        })
     }
 
     update(id: number, updateBrandDto: UpdateBrandDto) {
         return `This action updates a #${id} brand`
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} brand`
+    remove(id: string) {
+        return this.brandRepository.softDelete(id)
     }
 }

@@ -21,10 +21,6 @@ export class ProductDto extends BaseDto {
     @IsString()
     slug: string
 
-    @IsNotEmpty()
-    @IsNumber()
-    price: number
-
     @IsOptional()
     @IsNumber()
     discount_percentage?: number
@@ -43,7 +39,7 @@ export class ProductDto extends BaseDto {
 
     @IsNotEmpty()
     @IsBoolean()
-    is_published: boolean
+    is_publish: boolean
 
     @IsNotEmpty()
     @IsNumber()

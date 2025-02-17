@@ -24,7 +24,9 @@ export class CategoriesService {
     }
 
     findAll() {
-        return this.categoryRepository.find()
+        return this.categoryRepository.find({
+            relations: ['products'],
+        })
     }
 
     findById(id: string) {
@@ -33,17 +35,5 @@ export class CategoriesService {
 
     findByIds(ids: string[]) {
         return this.categoryRepository.findBy({ id: In(ids) })
-    }
-
-    findOne(id: number) {
-        return `This action returns a #${id} category`
-    }
-
-    update(id: number, updateCategoryDto: UpdateCategoryDto) {
-        return `This action updates a #${id} category`
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} category`
     }
 }

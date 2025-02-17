@@ -15,28 +15,31 @@ import { UpdateBrandDto } from './dto/update-brand.dto'
 export class BrandsController {
     constructor(private readonly brandsService: BrandsService) {}
 
-    @Post()
-    create(@Body() createBrandDto: CreateBrandDto) {
-        return this.brandsService.create(createBrandDto)
-    }
-
     @Get()
-    findAll() {
+    getAllBrands() {
         return this.brandsService.findAll()
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.brandsService.findOne(id)
+    getBrandById(@Param('id') id: string) {
+        return this.brandsService.findById(id)
+    }
+
+    @Post()
+    createBrand(@Body() createBrandDto: CreateBrandDto) {
+        return this.brandsService.create(createBrandDto)
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
+    updateById(
+        @Param('id') id: string,
+        @Body() updateBrandDto: UpdateBrandDto,
+    ) {
         return this.brandsService.update(+id, updateBrandDto)
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.brandsService.remove(+id)
+    deleteById(@Param('id') id: string) {
+        return this.brandsService.remove(id)
     }
 }
