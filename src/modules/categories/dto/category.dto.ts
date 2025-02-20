@@ -18,10 +18,6 @@ export class CategoryDto extends BaseDto {
     @IsString()
     thumbnail: string
 
-    @IsNotEmpty()
-    @IsString()
-    icon: string
-
     @IsOptional()
     @IsString()
     description: string

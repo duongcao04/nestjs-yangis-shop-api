@@ -13,9 +13,6 @@ export class Category extends Base {
     @Column({ type: 'varchar' })
     thumbnail: string
 
-    @Column({ type: 'varchar' })
-    icon: string
-
     @Column({ type: 'varchar', length: 500, nullable: true })
     description?: string
 

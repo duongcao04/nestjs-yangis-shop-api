@@ -18,8 +18,11 @@ export class Product extends Base {
     @Column({ type: 'varchar', length: 50 })
     name: string
 
-    @Column({ type: 'varchar', length: 100, unique: true })
+    @Column({ type: 'varchar', length: 100 })
     slug: string
+
+    @Column({ type: 'int', nullable: true })
+    price: number
 
     @Column({ type: 'int', nullable: true })
     discount_percentage?: number
@@ -27,7 +30,7 @@ export class Product extends Base {
     @Column({ type: 'varchar', length: 500 })
     description: string
 
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'varchar' })
     thumbnail: string
 
     @Column({ type: 'boolean', default: false })

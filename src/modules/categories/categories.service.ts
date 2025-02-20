@@ -17,7 +17,6 @@ export class CategoriesService {
         category.name = createCategoryDto.name
         category.slug = createCategoryDto.slug
         category.thumbnail = createCategoryDto.thumbnail
-        category.icon = createCategoryDto.icon
         category.description = createCategoryDto.description
 
         return this.categoryRepository.save(category)

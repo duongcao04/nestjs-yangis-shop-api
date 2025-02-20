@@ -30,6 +30,7 @@ export class ProductsService {
         product.name = createProductDto.name
         product.slug = createProductDto.slug
         product.description = createProductDto.description
+        product.price = createProductDto.price
         product.discount_percentage = createProductDto.discount_percentage
         product.thumbnail = createProductDto.thumbnail
         product.is_publish = createProductDto.is_publish
@@ -116,9 +117,22 @@ export class ProductsService {
     }
 
     async findById(id: string): Promise<Product> {
+        const metadata = this.productRepository.metadata
+        const relations = metadata.relations.map((rel) => rel.propertyName)
+
         return await this.productRepository.findOne({
             where: { id },
-            relations: ['brand', 'categories', 'attributes', 'variants'],
+            relations: relations,
+        })
+    }
+
+    async findBySlug(slug: string): Promise<Product> {
+        const metadata = this.productRepository.metadata
+        const relations = metadata.relations.map((rel) => rel.propertyName)
+
+        return await this.productRepository.findOne({
+            where: { slug },
+            relations: relations,
         })
     }
 

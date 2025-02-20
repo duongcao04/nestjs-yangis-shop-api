@@ -18,10 +18,15 @@ export class ProductsController {
 
     @Get()
     getAllProducts(
+        @Query('slug') slug?: string,
         @Query('fields') fields?: string,
         @Query('sort') sort?: string,
     ) {
-        return this.productsService.findAll(fields)
+        if (slug) {
+            return this.productsService.findBySlug(slug)
+        }
+
+        return this.productsService.findAll(fields, sort)
     }
 
     @Post()
