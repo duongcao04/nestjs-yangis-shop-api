@@ -11,6 +11,7 @@ import { BrandsModule } from '@/modules/brands/brands.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { MailModule } from '@/modules/mail/mail.module'
 import { JwtModule } from '@nestjs/jwt'
+import { CommentsModule } from '@/modules/comments/comments.module'
 
 @Module({
     imports: [
@@ -32,11 +33,12 @@ import { JwtModule } from '@nestjs/jwt'
             inject: [ConfigService],
         }),
         MailModule,
+        UsersModule,
+        AuthModule,
         ProductsModule,
         CategoriesModule,
         BrandsModule,
-        UsersModule,
-        AuthModule,
+        CommentsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

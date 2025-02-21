@@ -1,65 +1,74 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { AttributesService } from './attributes.service'
 import { Variant } from '../entities/variant.entity'
 import { CreateVariantDto } from '../dto/create-variant.dto'
 import { ProductsService } from './products.service'
+import { AttributeValuesService } from './attribute-values.service'
 
 @Injectable()
 export class VariantsService {
+    private relations: string[]
     constructor(
         @InjectRepository(Variant)
         private readonly variantRepository: Repository<Variant>,
         private readonly productsService: ProductsService,
-        private readonly attributesService: AttributesService,
-    ) {}
+        private readonly attributeValuesService: AttributeValuesService,
+    ) {
+        this.relations = this.variantRepository.metadata.relations.map(
+            (rel) => rel.propertyName,
+        )
+    }
 
-    async create(
+    async createVariant(
         productId: string,
-        attributeId: string,
         createVariantDto: CreateVariantDto,
     ): Promise<Variant> {
-        const option = new Variant()
+        const variant = new Variant()
 
-        option.value = createVariantDto.value
-        option.sku = createVariantDto.sku
-        option.price = createVariantDto.price
-        option.stock = createVariantDto.stock
+        variant.SKU = createVariantDto.SKU
+        variant.price = createVariantDto.price
+        variant.stock_quantity = createVariantDto.stock_quantity
 
         const product = await this.productsService.findById(productId)
         if (!product) {
             throw new NotFoundException('Product not found!')
         }
-        option.product = product
+        variant.product = product
 
-        const attribute = await this.attributesService.findById(attributeId)
-        if (!attribute) {
-            throw new NotFoundException('Attribute not found!')
+        if (
+            createVariantDto.attribute_value_ids &&
+            createVariantDto.attribute_value_ids.length > 0
+        ) {
+            const attributeValues = await this.attributeValuesService.findByIds(
+                createVariantDto.attribute_value_ids,
+            )
+
+            if (
+                attributeValues.length !==
+                createVariantDto.attribute_value_ids.length
+            ) {
+                throw new NotFoundException(
+                    'One or more attribute values not found!',
+                )
+            }
+
+            variant.attribute_values = attributeValues
         }
-        option.attribute = attribute
 
-        return await this.variantRepository.save(option)
+        return await this.variantRepository.save(variant)
     }
 
-    async findAll(productId: string, attributeId: string): Promise<Variant[]> {
-        return await this.variantRepository.find({
-            where: {
-                attribute: { id: attributeId, product: { id: productId } },
-            },
+    async findAll(): Promise<Variant[]> {
+        return this.variantRepository.find({
+            relations: this.relations,
         })
     }
 
-    async findById(
-        productId: string,
-        attributeId: string,
-        id: string,
-    ): Promise<Variant> {
-        return await this.variantRepository.findOne({
-            where: {
-                id,
-                attribute: { id: attributeId, product: { id: productId } },
-            },
+    async findAllByProductId(productId: string): Promise<Variant[]> {
+        return this.variantRepository.find({
+            where: { product: { id: productId } },
+            relations: this.relations,
         })
     }
 }

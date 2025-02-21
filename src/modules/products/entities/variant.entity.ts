@@ -1,29 +1,39 @@
-import { Entity, Column, JoinColumn, ManyToOne, OneToOne } from 'typeorm'
+import {
+    Entity,
+    Column,
+    ManyToOne,
+    JoinTable,
+    ManyToMany,
+} from 'typeorm'
 import { Base } from '@/modules/base/base.entity'
 import { Product } from './product.entity'
-import { Attribute } from './attribute.entity'
+import { AttributeValue } from './attribute-value.entity'
 
 @Entity('variants')
 export class Variant extends Base {
-    @Column({ type: 'varchar', length: 50 })
-    value: string
-
     @ManyToOne(() => Product, (product) => product.variants)
-    @JoinColumn({ name: 'product_id' })
     product: Product
 
-    @ManyToOne(() => Attribute, (attribute) => attribute.variants, {
-        nullable: false,
+    @ManyToMany(() => AttributeValue)
+    @JoinTable({
+        name: 'variant_attribute_values',
+        joinColumn: { name: 'variant_id', referencedColumnName: 'id' },
+        inverseJoinColumn: {
+            name: 'attribute_value_id',
+            referencedColumnName: 'id',
+        },
     })
-    @JoinColumn({ name: 'attribute_id' })
-    attribute: Attribute
+    attribute_values: AttributeValue[]
 
-    @Column({ type: 'varchar', length: 50 })
-    sku: string
+    @Column('boolean', { default: true })
+    is_active: boolean
+
+    @Column({ unique: true })
+    SKU: string
 
     @Column({ type: 'int', nullable: false })
     price: number
 
-    @Column({ type: 'int', nullable: false })
-    stock: number
+    @Column({ type: 'int', default: 0 })
+    stock_quantity: number
 }

@@ -1,7 +1,8 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 import { AccountType } from '../enums/account-type.enum'
 import { Role } from '../enums/role.enum'
 import { Base } from '@/modules/base/base.entity'
+import { Comment } from '../../comments/entities/comment.entity'
 
 @Entity('users')
 export class User extends Base {
@@ -43,4 +44,7 @@ export class User extends Base {
 
     @Column({ type: 'varchar', nullable: true })
     refresh_token: string
+
+    @OneToMany(() => Comment, (comment) => comment.user)
+    comments: Comment[]
 }

@@ -12,6 +12,8 @@ import { Category } from '@/modules/categories/entities/category.entity'
 import { Base } from '@/modules/base/base.entity'
 import { Variant } from './variant.entity'
 import { Attribute } from './attribute.entity'
+import { Comment } from '../../comments/entities/comment.entity'
+import { AttributeValue } from './attribute-value.entity'
 
 @Entity('products')
 export class Product extends Base {
@@ -34,7 +36,7 @@ export class Product extends Base {
     thumbnail: string
 
     @Column({ type: 'boolean', default: false })
-    is_publish: boolean
+    is_published: boolean
 
     @Column({ type: 'int', default: 0 })
     view_count: number
@@ -51,9 +53,20 @@ export class Product extends Base {
     })
     categories: Category[]
 
-    @OneToMany(() => Attribute, (attribute) => attribute.product)
+    @ManyToMany(() => Attribute)
+    @JoinTable({
+        name: 'product_attributes',
+        joinColumn: { name: 'product_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'attribute_id', referencedColumnName: 'id' },
+    })
     attributes: Attribute[]
+
+    @OneToMany(() => AttributeValue, (atv) => atv.product)
+    attribute_values: AttributeValue[]
 
     @OneToMany(() => Variant, (variant) => variant.product)
     variants: Variant[]
+
+    @OneToMany(() => Comment, (comment) => comment.product)
+    comments: Comment[]
 }

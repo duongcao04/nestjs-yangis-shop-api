@@ -1,19 +1,28 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import {
+    IsBoolean,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+} from 'class-validator'
 
 export class CreateVariantDto {
     @IsNotEmpty()
-    @IsString()
-    value: string
+    attribute_value_ids: string[]
 
     @IsNotEmpty()
     @IsString()
-    sku: string
+    SKU: string
 
     @IsNotEmpty()
     @IsNumber()
     price: number
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsNumber()
-    stock: number
+    stock_quantity: number
+
+    @IsOptional()
+    @IsBoolean()
+    is_active: boolean
 }

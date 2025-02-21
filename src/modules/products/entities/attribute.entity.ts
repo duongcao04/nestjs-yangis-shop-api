@@ -1,28 +1,20 @@
 import {
     Entity,
     Column,
-    JoinColumn,
-    OneToMany,
-    ManyToOne,
     PrimaryGeneratedColumn,
+    OneToMany,
 } from 'typeorm'
-import { Product } from './product.entity'
-import { Variant } from './variant.entity'
+import { AttributeValue } from './attribute-value.entity'
+import { Base } from '../../base/base.entity'
 
 @Entity('attributes')
-export class Attribute {
+export class Attribute extends Base {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
     @Column({ type: 'varchar', length: 50 })
     name: string
 
-    @ManyToOne(() => Product, (product) => product.variants, {
-        nullable: false,
-    })
-    @JoinColumn({ name: 'product_id' })
-    product: Product
-
-    @OneToMany(() => Variant, (variants) => variants.attribute)
-    variants: Variant[]
+    @OneToMany(() => AttributeValue, (value) => value.attribute)
+    values: AttributeValue[]
 }

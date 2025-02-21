@@ -68,8 +68,12 @@ export class UsersService {
         return Boolean(await this.userRepository.findOneBy({ email }))
     }
 
-    findAll(): Promise<User[]> {
+    async findAll(): Promise<User[]> {
         return this.userRepository.find()
+    }
+
+    async findById(id: string): Promise<User> {
+        return await this.userRepository.findOne({ where: { id } })
     }
 
     updateUser(id: string, updateUserDto: UpdateUserDto) {

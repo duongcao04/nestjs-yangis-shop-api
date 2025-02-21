@@ -1,26 +1,39 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common'
 import { AttributesService } from '../services/attributes.service'
 import { CreateAttributeDto } from '../dto/create-attribute.dto'
+import { CreateAttributeValueDto } from '../dto/create-attribute-value.dto'
+import { AttributeValuesService } from '../services/attribute-values.service'
 
-@Controller('products/:productId/attributes')
+@Controller('attributes')
 export class AttributesController {
-    constructor(private readonly attributesService: AttributesService) {}
+    constructor(
+        private readonly attributesService: AttributesService,
+        private readonly attributeValuesService: AttributeValuesService,
+    ) {}
 
     @Get()
-    getAllVariants(@Param('productId') productId: string) {
-        return this.attributesService.findAll(productId)
+    getAllAttributes() {
+        return this.attributesService.findAll()
     }
 
     @Post()
-    createVariant(
-        @Param('productId') productId: string,
-        @Body() createAttributeDto: CreateAttributeDto,
-    ) {
-        return this.attributesService.create(productId, createAttributeDto)
+    createAttribute(@Body() createAttributeDto: CreateAttributeDto) {
+        return this.attributesService.createAttribute(createAttributeDto)
     }
 
-    @Get(':id')
-    getVariantById(@Param('id') id: string) {
-        return this.attributesService.findById(id)
+    @Get(':attributeId/attribute-values')
+    getAllAttributeValuesByAttributeId(@Param() attributeId: string) {
+        return this.attributeValuesService.findAll(attributeId)
+    }
+
+    @Post(':attributeId/attribute-values')
+    createAttributeValue(
+        @Param('attributeId') attributeId: string,
+        @Body() createAttributeValueDto: CreateAttributeValueDto,
+    ) {
+        return this.attributeValuesService.createAttributeValue(
+            attributeId,
+            createAttributeValueDto,
+        )
     }
 }
